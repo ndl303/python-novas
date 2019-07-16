@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import novas
 from novas.compat import topo_star, CatEntry, OnSurface
 from novas.compat.eph_manager import ephem_open
 
-jd_begin, jd_end, de_number = ephem_open()
+jd_begin, jd_end, de_number = ephem_open(novas.default_ephemeris_file())
 
 print("JPL Ephemeris DE{de_number} open. jd_beg = {jd_begin:9.2f}  jd_end = {jd_end:9.2f}\n".format(de_number=de_number, jd_begin=jd_begin, jd_end=jd_end))
 

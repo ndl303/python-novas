@@ -5,6 +5,7 @@ from __future__ import with_statement
 import os
 import re
 import struct
+import shutil
 
 def download_ascii(ascii_dir, de_number, verbose=True):
     import ftplib
@@ -34,7 +35,7 @@ def download_ascii(ascii_dir, de_number, verbose=True):
 def process_header(ascii_dir, de_number, binary_file, verbose=True):
     group_nums = [0, 1010, 1030, 1040, 1041, 1050, 1070]
     
-    header_file = open(os.path.join(ascii_dir, "header.%s" % de_number), 'r')
+    header_file = open(os.path.join(ascii_dir, "header.%s" % de_number), 'rt')
     header_lines = header_file.read()
     header_file.close()
 
@@ -44,7 +45,7 @@ def process_header(ascii_dir, de_number, binary_file, verbose=True):
 
     ksize, ncoeff = [int(number) for number in re.findall(r'\d+', groups[0])]
 
-    alphanumeric_records = [line.strip() for line in groups[1010].split(os.linesep)]
+    alphanumeric_records = [line.strip() for line in groups[1010].split('\n')]
 
     start = float(groups[1030].split()[0])
     end = float(groups[1030].split()[1])
@@ -60,10 +61,10 @@ def process_header(ascii_dir, de_number, binary_file, verbose=True):
     pointers = [int(pointer) for pointer in groups[1050].split()]
 
     for line in alphanumeric_records:
-        binary_file.write(line.ljust(84))
+        binary_file.write( line.ljust(84).encode())
 
     for key in constants.keys():
-        binary_file.write(key.ljust(6))
+        binary_file.write( key.ljust(6).encode() )
 
     padding = 2400 - ncon * 6
 
@@ -112,6 +113,26 @@ def process_data_files(data_files, ncoeff, binary_file, verbose=True):
 
     for number in new_block[:ncoeff]:
         binary_file.write(struct.pack('=d', number))
+
+
+#------------------------------------------------------------------------------
+#           create_ephemeris
+#------------------------------------------------------------------------------
+
+def create_ephemeris(de_number=405):
+
+    ephemeris_dir= os.path.join( os.path.dirname(__file__), 'ephemeris_data')
+    build_temp    = os.path.join('.', 'buildephem')
+    os.makedirs(ephemeris_dir, exist_ok = True)
+    os.makedirs(build_temp,    exist_ok=True)
+    download_ascii(build_temp, de_number)
+    binary_file = open(os.path.join( ephemeris_dir, "DE%s.bin") % de_number, 'wb')
+    ncoeff      = process_header( build_temp, de_number, binary_file)
+    data_files  = [os.path.join( build_temp, "ascp%d.%s" %(year, de_number)) for year in range(1600, 2220, 20)]
+    process_data_files(data_files, ncoeff, binary_file)
+    binary_file.close()
+    shutil.rmtree( build_temp )
+
         
 if __name__ == '__main__':
     import tempfile

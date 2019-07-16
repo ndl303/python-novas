@@ -1,3 +1,4 @@
+import unittest
 from unittest import TestCase
 
 import novas.compat as novas
@@ -44,3 +45,6 @@ class IssueTests(TestCase):
         self.assertEqual(month, 4)
         self.assertEqual(day, 24)
         self.assertAlmostEqual(hour, 10.605000000447035, 15)
+
+if __name__ == '__main__':
+    unittest.main()

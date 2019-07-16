@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import ctypes
-from novas import novaslib, _check_c_errors
-from novas import (_neg_err, _hour_range_err, _elev_range_err,
+from .. import novaslib, _check_c_errors
+from .. import (_neg_err, _hour_range_err, _elev_range_err,
                    _az180_range_err, _az360_range_err, _vector_len_err,
                    _option_err, _jd_year_err, _month_range_err,
                    _day_range_err, _days_in_month)
-from novas import NonConvergentError, IndeterminateError, InitializationError
+from .. import NonConvergentError, IndeterminateError, InitializationError
 
 
 class CatEntry(ctypes.Structure):

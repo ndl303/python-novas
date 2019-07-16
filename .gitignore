@@ -5,3 +5,8 @@
 /.tox/
 *.pyc
 tmp*.py
+.idea
+novas_py.egg-info
+wheelhouse
+__pycache__
+ephemeris_data

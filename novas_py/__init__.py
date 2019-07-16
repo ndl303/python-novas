@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import os
+import os.path
 import sys
+import glob
 from ctypes import CDLL
-
 
 # Exception strings used when checking inputs
 _neg_err = "{name} must be >= 0.0"
@@ -54,11 +55,43 @@ def _check_c_errors(retval, func, args):
 
 
 def get_and_configure_library():
-    for directory in sys.path:
-        path_to_libnovas = os.path.join(directory, 'novas', 'libnovas.so')
-        if os.path.isfile(path_to_libnovas):
-            libnovas = CDLL(path_to_libnovas)
+    dirname = os.path.dirname(__file__)
+    names = glob.glob( os.path.join(dirname,'libnovas.*') )
+    dllname = names[0]
+    path_to_libnovas = dllname
+    if os.path.isfile(path_to_libnovas):
+        libnovas = CDLL(path_to_libnovas)
+    else:
+        libnovas = None
 
     return libnovas
 
-novaslib = get_and_configure_library()
+#------------------------------------------------------------------------------
+#           check_ephemeris_file
+#------------------------------------------------------------------------------
+
+def _check_ephemeris_file()->str:
+    ephem_file = None
+    ephemeris_spec = os.path.join(os.path.dirname(__file__), 'ephemeris_data', '*.bin')
+    files = glob.glob(ephemeris_spec)
+    if len(files) > 0:
+        ephem_file = files[0]
+    else:
+        print('Did not find any ephemeris files. Creating the ephemerides')
+        from . asc2eph  import create_ephemeris
+        create_ephemeris()
+        files = glob.glob(ephemeris_spec)
+        ephem_file = files[0]
+    return ephem_file
+
+#------------------------------------------------------------------------------
+#           default_ephemeris_file
+#------------------------------------------------------------------------------
+
+def default_ephemeris_file():
+    return _check_ephemeris_file()
+
+
+novaslib  = get_and_configure_library()
+
+
