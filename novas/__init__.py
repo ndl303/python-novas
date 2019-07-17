@@ -64,7 +64,7 @@ def get_and_configure_library():
         if os.path.isfile(path_to_libnovas):
             libnovas = CDLL(path_to_libnovas)
     else:
-        print('Could not find the libnovas DLL/shared object in folder {}. Thats a problem'.format(dirname))
+        print('Could not find the libnovas DLL or shared object in folder {}. Thats usually a problem although it is ok if you are just building Sphinx documentation)'.format(dirname))
 
     return libnovas
 
