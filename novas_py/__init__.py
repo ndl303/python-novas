@@ -57,12 +57,14 @@ def _check_c_errors(retval, func, args):
 def get_and_configure_library():
     dirname = os.path.dirname(__file__)
     names = glob.glob( os.path.join(dirname,'libnovas.*') )
-    dllname = names[0]
-    path_to_libnovas = dllname
-    if os.path.isfile(path_to_libnovas):
-        libnovas = CDLL(path_to_libnovas)
+    libnovas = None
+    if (names is not None) and (len(names) > 0):
+        dllname = names[0]
+        path_to_libnovas = dllname
+        if os.path.isfile(path_to_libnovas):
+            libnovas = CDLL(path_to_libnovas)
     else:
-        libnovas = None
+        print('Could not find the libnovas DLL/shared object in folder {}. Thats a problem'.format(dirname))
 
     return libnovas
 

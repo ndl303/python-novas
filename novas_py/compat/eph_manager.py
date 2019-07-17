@@ -63,16 +63,14 @@ def ephem_open(ephem_name=None):
     jd_end = ctypes.c_double()
     de_number = ctypes.c_short()
 
-    # Begin customizations by Brandon Rhodes for release on PyPI
+    # Begin customizations by Brandon Rhodes for release on PyPI. Further modified by Nick Lloyd
     if ephem_name is None and 'EPHEMERIS_FILE' not in os.environ:
         try:
-            import novas_de405
+            from .. novas import default_ephemeris_file
+            ephem_name = default_ephemeris_file()
         except ImportError:
             pass
-        else:
-            directory = os.path.dirname(novas_de405.__file__)
-            ephem_name = os.path.join(directory, 'DE405.bin')
-    # End customizations by Brandon Rhodes for release on PyPI
+    # End customizations by Brandon Rhodes for release on PyPI. End of modifications by Nick Lloyd
 
     if ephem_name is None:
         try:
