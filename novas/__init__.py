@@ -79,7 +79,7 @@ def _check_ephemeris_file()->str:
     if len(files) > 0:
         ephem_file = files[0]
     else:
-        print('Did not find any ephemeris files. Creating the ephemerides')
+        print('Did not find any ephemeris files. Downloading and creating default DE405 ephemerides')
         from . asc2eph  import create_ephemeris
         create_ephemeris()
         files = glob.glob(ephemeris_spec)

@@ -22,7 +22,7 @@ c_sources         =[ 'Cdist/cio_file.c',
                    ]
 system = platform.system().lower()
 if 'darwin' in system:
-     extra_compile_args: ['-arch', 'i386', '-arch', 'x86_64', '-O2', '-Wall', '-fPIC']
+     extra_compile_args = ['-arch', 'i386', '-arch', 'x86_64', '-O2', '-Wall', '-fPIC']
 elif 'windows' in system:
      c_sources.append('Cdist/windows_specifics/windows_dllmain.cpp')
      c_sources.append('Cdist/windows_specifics/pyinit_libnovas.c')
@@ -51,7 +51,7 @@ setup(
     url                  = 'http://www.usno.navy.mil/USNO/astronomical-applications/software-products/novas',
     download_url         = 'http://www.usno.navy.mil/USNO/astronomical-applications/software-products/novas',
     packages             = ['novas', 'novas.compat', 'novas.tests'],
-    package_dir          = { 'novas'       : 'novas_py' },
+#    package_dir          = { 'novas'       : 'novas_py' },
     data_files           = [], 
     ext_modules          = [extension_module],
     include_package_data = False,

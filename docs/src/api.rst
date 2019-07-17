@@ -329,3 +329,43 @@ transform_hip
 -------------
 .. autofunction :: novas.compat.transform_hip
 
+Constants
+^^^^^^^^^
+These are constants available for use in the novas python code. The values have been copied from the C source code and
+changing these values will not change the values used in the under-lying C-source.
+
+.. autodata:: novas.constants.T0
+
+.. autodata:: novas.constants.C
+
+.. autodata:: novas.constants.AU_SEC
+
+.. autodata:: novas.constants.C_AUDAY
+
+.. autodata:: novas.constants.AU
+
+.. autodata:: novas.constants.AU_KM
+
+.. autodata:: novas.constants.GS
+
+.. autodata:: novas.constants.GE
+
+.. autodata:: novas.constants.ERAD
+
+.. autodata:: novas.constants.F
+
+.. autodata:: novas.constants.ANGVEL
+
+.. autodata:: novas.constants.RMASS
+
+.. autodata:: novas.constants.TWOPI
+
+.. autodata:: novas.constants.ASEC360
+
+.. autodata:: novas.constants.ASEC2RAD
+
+.. autodata:: novas.constants.DEG2RAD
+
+.. autodata:: novas.constants.RAD2DEG
+
+
