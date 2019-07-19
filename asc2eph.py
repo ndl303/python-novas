@@ -34,7 +34,7 @@ def download_ascii(ascii_dir, de_number, verbose=True):
 def process_header(ascii_dir, de_number, binary_file, verbose=True):
     group_nums = [0, 1010, 1030, 1040, 1041, 1050, 1070]
     
-    header_file = open(os.path.join(ascii_dir, "header.%s" % de_number), 'r')
+    header_file = open(os.path.join(ascii_dir, "header.%s" % de_number), 'rt')
     header_lines = header_file.read()
     header_file.close()
 
@@ -44,7 +44,7 @@ def process_header(ascii_dir, de_number, binary_file, verbose=True):
 
     ksize, ncoeff = [int(number) for number in re.findall(r'\d+', groups[0])]
 
-    alphanumeric_records = [line.strip() for line in groups[1010].split(os.linesep)]
+    alphanumeric_records = [line.strip() for line in groups[1010].split('\n')]
 
     start = float(groups[1030].split()[0])
     end = float(groups[1030].split()[1])
@@ -60,10 +60,10 @@ def process_header(ascii_dir, de_number, binary_file, verbose=True):
     pointers = [int(pointer) for pointer in groups[1050].split()]
 
     for line in alphanumeric_records:
-        binary_file.write(line.ljust(84))
+        binary_file.write( line.ljust(84).encode())
 
     for key in constants.keys():
-        binary_file.write(key.ljust(6))
+        binary_file.write( key.ljust(6).encode() )
 
     padding = 2400 - ncon * 6
 

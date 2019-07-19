@@ -5,3 +5,7 @@
 /.tox/
 *.pyc
 tmp*.py
+.idea
+__pycache__
+build
+dist

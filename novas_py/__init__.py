@@ -54,10 +54,22 @@ def _check_c_errors(retval, func, args):
 
 
 def get_and_configure_library():
-    for directory in sys.path:
-        path_to_libnovas = os.path.join(directory, 'novas', 'libnovas.so')
-        if os.path.isfile(path_to_libnovas):
-            libnovas = CDLL(path_to_libnovas)
+
+    if (sys.platform == 'win32'):
+        import glob
+        dirname = os.path.dirname(__file__)
+        names = glob.glob( os.path.join(dirname,'novas.dll') )
+        libnovas = None
+        if (names is not None) and (len(names) > 0):
+            dllname = names[0]
+            path_to_libnovas = dllname
+            if os.path.isfile(path_to_libnovas):
+                libnovas = CDLL(path_to_libnovas)
+    else:
+        for directory in sys.path:
+            path_to_libnovas = os.path.join(directory, 'novas', 'libnovas.so')
+            if os.path.isfile(path_to_libnovas):
+                libnovas = CDLL(path_to_libnovas)
 
     return libnovas
 

@@ -140,7 +140,18 @@ def main():
             }
         )]
     elif 'windows' in system:
-        raise OSError("Operating system not supported at this time")
+         c_sources.append('Cdist/windows_specifics/windows_dllmain.cpp')
+         c_sources.append('Cdist/windows_specifics/pyinit_libnovas.c')
+         extra_link_args = [r'/DEF:"Cdist\\windows_specifics\\windows_dllexports.def"', '/DLL']
+         novaslib = [(
+            'novas', {
+                'package': 'novas',
+                'sources': c_sources,
+                'include_dirs': ['Cdist'],
+                'extra_link_args': [r'/DEF:"Cdist\\windows_specifics\\windows_dllexports.def"', '/DLL']
+            }
+        )]
+
     else:
         novaslib = [(
             'novas', {
